@@ -59,5 +59,43 @@ try:
     # Ordenamos la lista de juegos
     miListaJuegos.ordenarLista()
 
+
+    # ESCRITURA DE XML
+    # Creamos una etiqueta o elemento
+    juegosViejos = ET.Element("JuegosViejos")
+    # Creamos una sub-etiqueta o sub-elemento de un elemento mayor en jerarquía
+    lstaPlata = ET.SubElement(juegosViejos, "ListaPlataformas")
+    for i in range(miListaPlataformas.obtenerContador()):
+        plataforma = ET.SubElement(lstaPlata, "Plataforma")
+        elementoListaOrd = miListaPlataformas.extraer()
+        ET.SubElement(plataforma, "codigo").text = elementoListaOrd.obtenerCodigo()
+        ET.SubElement(plataforma, "nombre").text = elementoListaOrd.obtenerNombre()
+    listadoJuegos = ET.SubElement(juegosViejos, "ListadoJuegos")
+    for i in range(miListaJuegos.obtenerContador()):
+        juego = ET.SubElement(listadoJuegos, "Juego")
+        elementoJuegoOrd = miListaJuegos.extraer()
+        ET.SubElement(juego, "codigo").text = elementoJuegoOrd.obtenerCodigo()
+        ET.SubElement(juego, "nombre").text = elementoJuegoOrd.obtenerNombre()
+        plataformasJ = ET.SubElement(juego, "Plataformas")
+        for plataform in elementoJuegoOrd.obtenerPlataformas():
+            plataformaJ = ET.SubElement(plataformasJ, "Plataforma")
+            ET.SubElement(plataformaJ, "codigo").text = plataform
+
+    # Se escribe dentro del parámetro la etiqueta o elemento raíz del árbol
+    archivo = ET.ElementTree(juegosViejos)
+    # Se crea el archivo XML
+    archivo.write("escritura.xml")
+
+    # Indentar las etiquetas del XML
+    archivoXML = 'escritura.xml'
+    docxml = ET.parse(archivoXML)
+    raiz = docxml.getroot()
+    xmlTextoOrdenado = MD.parseString(ET.tostring(raiz)).toprettyxml()
+
+    # Sobreescribir el archivo xml para que aparezca con los saltos de línea e indentado
+    file = open("escritura.xml", "w+")
+    file.write(xmlTextoOrdenado)
+    file.close()
+    print("¡Archivo ordenado con éxito! :D")
 except:
     print("[ERROR]: Archivo no encontrado")

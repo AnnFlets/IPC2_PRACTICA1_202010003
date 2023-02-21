@@ -45,3 +45,9 @@ class Lista:
                 temp_apuntador_anterior = temp_apuntador_anterior.obtenerSiguiente()
                 temp_apuntador_siguiente = temp_apuntador_siguiente.obtenerSiguiente()
                 contadorLista += 1
+
+    def extraer(self):
+        temp_apuntador_anterior = self.cabeza
+        temp_apuntador_siguiente = self.cabeza.obtenerSiguiente()
+        self.cabeza = temp_apuntador_siguiente
+        return temp_apuntador_anterior
